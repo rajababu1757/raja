@@ -1,0 +1,95 @@
+<style>
+	label{
+		width: 80px;
+		display: inline-block;
+	}
+	.loginDetails{
+		width: fit-content;
+		margin: auto;
+		border: 2px solid blueviolet;
+		border-radius: 10px;
+		padding: 15px;
+		background-color: yellowgreen;
+
+	}
+	h1{
+		background-color: beige;
+		text-align: right;
+		font-size: 45px;
+		border: 2px solid bisque;
+		border-radius: 10px;
+		padding: 10px;
+		color: brown;
+		font-weight: normal;
+	}
+	input{
+		margin-bottom: 5px;
+	}
+	footer{
+		text-align: center;
+		color: white;
+		bottom: 0px;
+		position: fixed;
+		width: 100%;
+	}
+	body{
+		background-color: darkcyan;
+	}
+</style>
+
+<body>
+	<h1>Login Page</h1>
+	<div class="loginDetails">
+		<h2>Enter Login Credentials</h2>
+		<div>
+			<label>UserName :</label>
+			<input type="text" placeholder="Enter Username" id="userName">		
+		</div>
+		<div>
+			<label>Password :</label>
+			<input type="Password" placeholder="Enter Password" id="userPwd">
+		</div>
+		<div id="loginMsg"></div>
+		<div align="center">
+			<button onclick="checkForValidUser()">Login</button>
+			<button onclick="location.href='formRegister.html'">Register Page</button>
+		</div>
+	</div>
+	<footer>&copy; belongs to XYZ</footer>
+</body>
+
+<script>
+function checkForValidUser(){
+	//getting referecne and storing the values
+	var userNameRef = document.getElementById("userName").value;
+	var userPwdRef = document.getElementById("userPwd").value;		//(done)
+	
+	//for displaying message
+	var loginMsgRef = document.getElementById("loginMsg")
+	
+	//storing the login details in an object
+	var newUserObj = {
+		"userName" : userNameRef,
+		"userPwd" : userPwdRef,
+	}		//(done)
+	
+	//getting the stored data for localStorage
+	var allUsers = localStorage.getItem("newUserObj");
+	var uniqueUser = JSON.parse(allUsers);
+	//debugger
+	//comparing the login detaisl with uniquewUSer(which we created to store and compre data when we needed) by someFunction
+	var isValidUser = uniqueUser.some(function(uniqueObj){
+		return uniqueObj.userName == newUserObj.userName && uniqueObj.userPwd == newUserObj.userPwd;
+	});
+	
+	// we got a boolean value from above fucntion(method)
+	
+	if(isValidUser){
+		location.href = "formHomePage.html";
+	}else{
+		loginMsgRef.innerHTML = "Please Check Your Login Details";
+	}
+	
+	
+}
+</script>

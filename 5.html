@@ -1,0 +1,46 @@
+<html>
+<head>
+<style>
+	 
+</style>
+</head>
+<body>
+<p>
+<span>first Number:</span>
+<input type="text" id="num1"></p>
+<p>
+<span>Second Number:</span>
+<input type="text" id="num2"></p>
+<p>
+<input type="button" onclick="arthimatic()" value="arthimatic">
+</p>
+<p>
+<span id="result"></span>
+</p>
+<script>
+function arthimatic(oparation){
+	
+	
+	
+
+	var fno =Number(document.getElementById('num1').value),
+	var sno =Number(document.getElementById('num2').value)
+	
+	var resRef=Number(document.getElementById('result'));
+	
+   
+
+    var add=(fno)+(sno);
+    var sub=(fno)-(sno);
+    var mul=(fno)*t(sno);
+    var div=(fno)/(sno);
+    var mod=(fno)%(sno);
+    var resTable="<table border=1px><tr><td>Addition</td><td>"+add+"</td></tr><tr><td>Subtration</td><td>"+sub+"</td></tr><tr><td>Multiplicaton</td><td>"+mul+"</td></tr><tr><td>Divition</td><td>"+div+"</td></tr><tr><td>Mod</td><td>"+mod+"</td></tr></table>"
+    resRef.innerHTML=resTable;
+    
+
+}
+
+</script>
+</body>
+</html>

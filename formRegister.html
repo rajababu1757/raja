@@ -1,0 +1,184 @@
+<style>
+	label{
+		width: 120px;
+		display: inline-block;
+	}
+	.registerDetails{
+		width: fit-content;
+		margin: auto;
+		border: 2px solid blueviolet;
+		border-radius: 10px;
+		padding: 15px;
+		background-color: yellowgreen;
+
+	}
+	h1{
+		background-color: beige;
+		text-align: center;
+		font-size: 45px;
+		border: 2px solid bisque;
+		border-radius: 10px;
+		padding: 10px;
+		color: brown;
+		font-weight: normal;
+	}
+	input{
+		margin-bottom: 5px;
+	}
+	body{
+		background-color: cadetblue;
+	}
+	button{
+		margin-bottom: 5px;
+		width: 100%;
+		height: 25px;
+	}
+	footer{
+		text-align: center;
+		color: white;
+		bottom: 0px;
+		position: fixed;
+		width: 100%;
+	}
+</style>
+
+<body>
+	<h1>Register New User</h1>
+	<div class="registerDetails">
+		<h2>Enter Details</h2>
+		<div>
+			<label>UserName :</label>
+			<input type="text" placeholder="Enter Username" id="userName">
+		</div>
+		<div>
+			<label>Password :</label>
+			<input type="Password" placeholder="Enter Password" id="userPwd">
+		</div>
+		<div>
+			<label>Name :</label>
+			<input type="text" placeholder="Enter Yor Name" id="userFullName">
+		</div>
+		<div>
+			<label>Age :</label>
+			<input type="text" placeholder="Enter Age" id="userAge">
+		</div>
+		<div>
+			<label>Email :</label>
+			<input type="text" placeholder="Enter Email" id="userEmail">
+		</div>
+		
+		<div>
+			<label>Select Gender :</label>
+			<input type="radio" name="gender" value="Male">Male
+			<input type="radio" name="gender" value="Female">Female
+			<input type="radio" name="gender" value="Others">Others
+		</div>
+		<div>
+			<label>Phone Number :</label>
+			<input type="text" value="+91" id="userPhNum">
+		</div>
+		<div>
+			<label>Select Country :</label>
+			<select id="userCounty">
+				<option>India</option>
+				<option>USA</option>
+				<option>China</option>
+				<option>Australia</option>
+			</select>
+		</div>
+		<div align="center">
+			<button onclick="RegisterNewUser()"><!--<a href="formHomePage.html">Register</a>-->Register</button>
+			<button onclick="location.href='formLogin.html'">Existing User Click Here</button>
+			
+			
+		</div>
+		<div id="userMsg"></div>
+		<div align="center">Redireting to Login Page in..<span id="redirectMsg"></span> Seconds..</div>
+	</div>	
+	<div id="expe"></div>
+	<footer>&copy; belongs to XYZ</footer>
+</body>	
+
+<script>
+	function RegisterNewUser(){
+		//Getting the referrence newUsers Elements and store the value in it
+		var userFullNameRef = document.getElementById("userFullName").value;
+		var userAgeRef = document.getElementById("userAge").value;
+		var userEmailRed = document.getElementById("userEmail").value;
+		var userNameRef = document.getElementById("userName").value;
+		var userPwdRef = document.getElementById("userPwd").value;
+		var userPhNumRef = document.getElementById("userPhNum").value;
+		// radio button and select box values uable to get
+		//var userCountyRef = document.getElementById("userCounty").value;
+		//var userGenderRef = document.getElementsName("gender").value;		
+		var userMsgRef = document.getElementById("userMsg");
+		
+		
+		// (reference Done)
+		
+		//now storing the values in an Obj 
+		var newUserObj = {
+			"userFullName": userFullNameRef,
+			"userAge" : userAgeRef,
+			"userEmail" : userEmailRed,
+			"userName" : userNameRef,
+			"userPwd" : userPwdRef,
+			"userPhNum" : userPhNumRef,
+			//"userCounty" : userCountyRef,  			//avoiding becasue unable to get values
+			//"gender" : userGenderRef
+		}
+		//(storing done)
+		
+		//checking all the values are stored or not--(all the values Stored)
+		 /*  var expe = document.getElementById("expe"); 
+		expe.innerHTML = JSON.stringify(newUserObj);  */
+		
+		//now getting alluserobject from localstorage
+		var allUsers = localStorage.getItem("newUserObj");//atfirst it wil be empty if it is the first user registering or after refresh or after clearing the localStorage
+		
+		//creating an Empty array to store and use it for comparing and manipulating the data whenever needed as new users registers everytime
+		var uniqueUser = [];
+		
+		//now checking if newUserObj is new or already present in the storage ot data
+		if(allUsers == null){
+			uniqueUser.push(newUserObj);		//pushing newuserObj into unique user because user doesnot exist
+			allUsers = JSON.stringify(uniqueUser);		//converting to uniqueUser to string(because storage only takes data in string format)and storing in allUsers.
+			localStorage.setItem("newUserObj",allUsers); 		//now setting intem with key as newUserObj and values as allUsers vlaues--i.e; newuserObj values
+			userMsg.innerHTML = "Registered Successfully";		//becasue the storage is empty(no user data exist user registered succefully as the first user)
+		}else{
+			uniqueUser = JSON.parse(allUsers);		//because all users is not empty converting it to array to comapre user name and other details to check for exsisting users
+			//here compare uniqueUser data to newUserObj data by some function.
+			var isUserExist = uniqueUser.some(function(uniqueObj){		//here uniqueObj is just a name given as argument for anonymous function
+				return uniqueObj.userName == newUserObj.userName;
+			})
+		}
+		
+		// we got the boolean value for new users existince in storage and providing actions depending on boolean return type 
+		if(isUserExist == true){
+			userMsgRef.innerHTML = "User Name already Exists try Another Name";
+		}else if(isUserExist == false){
+			uniqueUser.push(newUserObj);
+			allUsers = JSON.stringify(uniqueUser);
+			localStorage.setItem("newUserObj",allUsers);
+			userMsg.innerHTML = "Registered Successfully";
+			//countdown();
+		}else{
+			alert("comparing isUserExist code has an error");
+		}
+		
+	}
+	
+	//countdown for redirect and redirecting to login page after succesful registration
+	/*var redirectMsgRef = document.getElementById("redirectMsg");
+	var seconds = 10;
+	function countdown(){
+		seconds = seconds - 1;
+		if(seconds<0){
+			location.href = "formLogin.html";
+		}else{			
+			redirectMsgRef.innerHTML = seconds;			//updating remaing seconds
+			window.setTimeout("countdown()",1000);		//repeating countdown() function
+		}*/
+		
+</script>
+	

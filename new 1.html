@@ -1,0 +1,107 @@
+<body>
+	<h1>Register New User</h1>
+	<div class="registerDetails">
+		<h2>Enter Details</h2>
+		<div>
+			<label>UserName :</label>
+			<input type="text" placeholder="Enter Username" id="userName">
+		</div>
+		<div>
+			<label>Password :</label>
+			<input type="Password" placeholder="Enter Password" id="userPwd">
+		</div>
+		<div>
+			<label>Name :</label>
+			<input type="text" placeholder="Enter Yor Name" id="userFullName">
+		</div>
+		<div>
+			<label>Age :</label>
+			<input type="text" placeholder="Enter Age" id="userAge">
+		</div>
+		<div>
+			<label>Email :</label>
+			<input type="text" placeholder="Enter Email" id="userEmail">
+		</div>
+		
+		<div>
+			<label>Select Gender :</label>
+			<input type="radio" name="gender" value="Male">Male
+			<input type="radio" name="gender" value="Female">Female
+			<input type="radio" name="gender" value="Others">Others
+		</div>
+		<div>
+			<label>Phone Number :</label>
+			<input type="text" value="+91" id="userPhNum">
+		</div>
+		<div>
+			<label>Select Country :</label>
+			<select id="userCounty">
+				<option>India</option>
+				<option>USA</option>
+				<option>China</option>
+				<option>Australia</option>
+			</select>
+		</div>
+		<div align="center">
+			<button onclick="RegisterNewUser()"><!--<a href="formHomePage.html">Register</a>-->Register</button>
+			<button onclick="location.href='formLogin.html'">Existing User Click Here</button>
+		</div>
+		<div id="userMsg"></div>
+		<div align="center">Redireting to Login Page in..<span id="redirectMsg"></span> Seconds..</div>
+	</div>	
+	<div id="expe"></div>
+	<footer>&copy; belongs to XYZ</footer>
+</body>
+<script>
+	function RegisterNewUser(){
+		
+		var userFullNameRef = document.getElementById("userFullName").value;
+		var userAgeRef = document.getElementById("userAge").value;
+		var userEmailRed = document.getElementById("userEmail").value;
+		var userNameRef = document.getElementById("userName").value;
+		var userPwdRef = document.getElementById("userPwd").value;
+		var userPhNumRef = document.getElementById("userPhNum").value;
+		var userMsgRef = document.getElementById("userMsg");
+		//now storing the values in an Obj 
+		var newUserObj = {
+			"userFullName": userFullNameRef,
+			"userAge" : userAgeRef,
+			"userEmail" : userEmailRed,
+			"userName" : userNameRef,
+			"userPwd" : userPwdRef,
+			"userPhNum" : userPhNumRef,
+		}
+		//(storing done)
+		
+		//now getting alluserobject from localstorage
+		var allUsers = localStorage.getItem("newUserObj");	
+		//creating an Empty array to store and use it for comparing and manipulating the data 
+		var uniqueUser = [];
+		
+		//now checking if newUserObj is new or already present in the storage ot data
+		if(allUsers == null){
+			uniqueUser.push(newUserObj);		//pushing newuserObj into unique user because user doesnot exist
+			allUsers = JSON.stringify(uniqueUser);		
+			localStorage.setItem("newUserObj",allUsers); 		
+			userMsg.innerHTML = "Registered Successfully";		
+		}else{
+			uniqueUser = JSON.parse(allUsers);		
+			//here compare uniqueUser data to newUserObj data by some function.
+			var isUserExist = uniqueUser.some(function(uniqueObj){ //here uniqueObj is just a name given as 
+				return uniqueObj.userName == newUserObj.userName;
+			})
+		}		
+		if(isUserExist == true){
+			userMsgRef.innerHTML = "User Name already Exists try Another Name";
+		}else if(isUserExist == false){
+			uniqueUser.push(newUserObj);
+			allUsers = JSON.stringify(uniqueUser);
+			localStorage.setItem("newUserObj",allUsers);
+			userMsg.innerHTML = "Registered Successfully";
+			//countdown();
+		}else{
+			alert("comparing isUserExist code has an error");
+		}
+	}
+</script>
+	
